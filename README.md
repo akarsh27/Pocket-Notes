@@ -3,6 +3,8 @@ This is a simple Sticky Notes Application built with HTML, CSS, and JavaScript. 
 
 The theme for the app is inspired by a light green background, with interactive elements like buttons and text areas designed in complementary colors. This project aims to demonstrate modern front-end design practices with a minimalistic yet engaging user experience.
 
+##Application Link: https://akarsh27.github.io/Sticky-Notes-Application/
+
 ## Features
 
 **Create Notes:** Add a new sticky note by clicking on the + button.
