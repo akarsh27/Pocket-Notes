@@ -14,7 +14,7 @@ The theme for the app is inspired by a light green background, with interactive 
 **Delete Notes:** Remove notes by clicking the delete button, which is styled in a vibrant orange for easy identification.
 
 **Responsive Design:** The application adapts to different screen sizes, ensuring a seamless experience across devices.
-
+** version 0.0
 ## Screenshots![Screenshot 2024-10-03 at 12 41 10 AM](https://github.com/user-attachments/assets/f98512cd-ebd9-4333-8c7d-46b48947bbe7)
 ![Screenshot 2024-10-03 at 12 42 56 AM](https://github.com/user-attachments/assets/bc9ccc4e-a7b3-41cd-b2f5-355941dc36dd)
 
