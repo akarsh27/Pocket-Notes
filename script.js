@@ -36,7 +36,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Dark Mode Toggle
-    darkModeToggle.addEventListener('click', function () {
+    // darkModeToggle.addEventListener('click', function () {
+    //     document.body.classList.toggle('dark-mode');
+    // });
+    document.getElementById('dark-mode-toggle').addEventListener('click', function () {
         document.body.classList.toggle('dark-mode');
     });
 

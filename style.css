@@ -1,4 +1,3 @@
-/* Basic reset */
 * {
     margin: 0;
     padding: 0;
@@ -85,6 +84,23 @@ body.dark-mode {
     background-color: #f7c948;
 }
 
+body.dark-mode {
+    background-color: #202124; /* Set the desired background color */
+}
+
+/* Flash Card Dark Mode Styles */
+body.dark-mode .note-card {
+    background-color: #3a3b3c; /* A dark grey color for the flash card */
+    color: #ffffff; /* White text for better contrast */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* A slightly lighter shadow for dark mode */
+}
+
+/* text or elements within the flash card */
+body.dark-mode .note-card .note-title,
+body.dark-mode .note-card .note-content {
+    color: #ffffff;
+}
+
 /* Notes Container */
 .notes-grid {
     display: grid;
@@ -134,7 +150,7 @@ body.dark-mode {
     justify-content: flex-end;
 }
 
-/* Dropdown Menu - Updated for Sleek, Minimal Design */
+/* Dropdown Menu */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -299,5 +315,4 @@ button#save-note-btn, button#update-note-btn {
 button#save-note-btn:hover, button#update-note-btn:hover {
     background-color: #16a085;
 }
-
 
