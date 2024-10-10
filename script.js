@@ -1,147 +1,154 @@
-/*************************************************************************
- * Create Note Popup Logic
- **************************************************************************/
+document.addEventListener('DOMContentLoaded', function () {
+    // DOM Elements
+    const addNoteBtn = document.getElementById('add-note-btn');
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const notesContainer = document.getElementById('notes-container');
+    const modal = document.getElementById('note-modal');
+    const editModal = document.getElementById('edit-modal');
+    const saveNoteBtn = document.getElementById('save-note-btn');
+    const updateNoteBtn = document.getElementById('update-note-btn');
+    const closeBtns = document.querySelectorAll('.close-btn');
+    const noteTitleInput = document.getElementById('note-title-input');
+    const noteContentInput = document.getElementById('note-content-input');
+    const editTitleInput = document.getElementById('edit-note-title');
+    const editContentInput = document.getElementById('edit-note-content');
+  
+    // State
+    let notes = [];
+    let editingNoteId = null;
 
-function popup() {
-
-    const popupContainer = document.createElement("div");
-
-    popupContainer.innerHTML = `
-    <div id="popupContainer">
-        <h1>New Note</h1>
-        <textarea id="note-text" placeholder="Enter your note..."></textarea>
-        <div id="btn-container">
-            <button id="submitBtn" onclick="createNote()">Create Note</button>
-            <button id="closeBtn" onclick="closePopup()">Close</button>
-        </div>
-    </div>
-    `;
-    document.body.appendChild(popupContainer);
-}
-
-function closePopup() {
-    const popupContainer = document.getElementById("popupContainer");
-    if(popupContainer) {
-        popupContainer.remove();
+    // Modal Handling
+    function openModal(modal) {
+        modal.style.display = 'flex';
     }
-}
 
-function createNote() {
-
-    const popupContainer = document.getElementById('popupContainer');
-    const noteText = document.getElementById('note-text').value;
-    if (noteText.trim() !== '') {
-        const note = {
-        id: new Date().getTime(),
-        text: noteText
-        };
-
-        const existingNotes = JSON.parse(localStorage.getItem('notes')) || [];
-        existingNotes.push(note);
-
-        localStorage.setItem('notes', JSON.stringify(existingNotes));
-
-        document.getElementById('note-text').value = '';
-
-        popupContainer.remove();
-        displayNotes();
+    function closeModal(modal) {
+        modal.style.display = 'none';
+        noteTitleInput.value = '';
+        noteContentInput.value = '';
     }
-}
 
-
-/*************************************************************************
- * Display Notes Logic
- **************************************************************************/
-
-function displayNotes() {
-    const notesList = document.getElementById('notes-list');
-    notesList.innerHTML = '';
-
-    const notes = JSON.parse(localStorage.getItem('notes')) || [];
-
-    notes.forEach(note => {
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `
-        <span>${note.text}</span>
-        <div id="noteBtns-container">
-            <button id="editBtn" onclick="editNote(${note.id})"><i class="fa-solid fa-pen"></i></button>
-            <button id="deleteBtn" onclick="deleteNote(${note.id})"><i class="fa-solid fa-trash"></i></button>
-        </div>
-        `;
-        notesList.appendChild(listItem);
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            closeModal(modal);
+            closeModal(editModal);
+        });
     });
-}
 
+    // Dark Mode Toggle
+    darkModeToggle.addEventListener('click', function () {
+        document.body.classList.toggle('dark-mode');
+    });
 
-/*************************************************************************
- * Edit Note Popup Logic
- **************************************************************************/
+    // Save a new note
+    saveNoteBtn.addEventListener('click', function () {
+        const title = noteTitleInput.value.trim();
+        const content = noteContentInput.value.trim();
 
-function editNote(noteId) {
-    const notes = JSON.parse(localStorage.getItem('notes')) || [];
-    const noteToEdit = notes.find(note => note.id == noteId);
-    const noteText = noteToEdit ? noteToEdit.text : '';
-    const editingPopup = document.createElement("div");
-    
-    editingPopup.innerHTML = `
-    <div id="editing-container" data-note-id="${noteId}">
-        <h1>Edit Note</h1>
-        <textarea id="note-text">${noteText}</textarea>
-        <div id="btn-container">
-            <button id="submitBtn" onclick="updateNote()">Done</button>
-            <button id="closeBtn" onclick="closeEditPopup()">Cancel</button>
-        </div>
-    </div>
-    `;
+        if (title && content) {
+            const note = {
+                id: Date.now(),
+                title,
+                content
+            };
 
-    document.body.appendChild(editingPopup);
-}
+            notes.push(note);
+            saveNotesToLocalStorage();
+            renderNotes();
+            closeModal(modal);
+        }
+    });
 
-function closeEditPopup() {
-    const editingPopup = document.getElementById("editing-container");
+    // Update an existing note
+    updateNoteBtn.addEventListener('click', function () {
+        const updatedTitle = editTitleInput.value.trim();
+        const updatedContent = editContentInput.value.trim();
 
-    if(editingPopup) {
-        editingPopup.remove();
-    }
-}
-
-function updateNote() {
-    const noteText = document.getElementById('note-text').value.trim();
-    const editingPopup = document.getElementById('editing-container');
-
-    if (noteText !== '') {
-        const noteId = editingPopup.getAttribute('data-note-id');
-        let notes = JSON.parse(localStorage.getItem('notes')) || [];
-
-        // Find the note to update
-        const updatedNotes = notes.map(note => {
-            if (note.id == noteId) {
-                return { id: note.id, text: noteText };
+        notes = notes.map(note => {
+            if (note.id === editingNoteId) {
+                return { ...note, title: updatedTitle, content: updatedContent };
             }
             return note;
         });
 
-        // Update the notes in local storage
-        localStorage.setItem('notes', JSON.stringify(updatedNotes));
+        saveNotesToLocalStorage();
+        renderNotes();
+        closeModal(editModal);
+    });
 
-        // Close the editing popup
-        editingPopup.remove();
+    // Render notes
+    function renderNotes() {
+        notesContainer.innerHTML = '';
+        notes.forEach(note => {
+            const noteCard = document.createElement('div');
+            noteCard.classList.add('note-card');
+            noteCard.innerHTML = `
+                <h3 class="note-title">${note.title}</h3>
+                <p class="note-content">${note.content}</p>
+                <div class="note-actions">
+                    <div class="dropdown">
+                        <button class="dropdown-toggle">⋮</button>
+                        <div class="dropdown-menu">
+                            <button class="edit-btn">Edit</button>
+                            <button class="delete-btn">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `;
 
-        // Refresh the displayed notes
-        displayNotes();
+            // Edit and Delete Note Functionality
+            noteCard.querySelector('.edit-btn').addEventListener('click', function () {
+                editingNoteId = note.id;
+                editTitleInput.value = note.title;
+                editContentInput.value = note.content;
+                openModal(editModal);
+            });
+
+            noteCard.querySelector('.delete-btn').addEventListener('click', function () {
+                notes = notes.filter(n => n.id !== note.id);
+                saveNotesToLocalStorage();
+                renderNotes();
+            });
+
+            // Dropdown Toggle Functionality
+            const dropdownToggle = noteCard.querySelector('.dropdown-toggle');
+            const dropdownMenu = noteCard.querySelector('.dropdown-menu');
+
+            dropdownToggle.addEventListener('click', function (event) {
+                event.stopPropagation(); // Prevent click from closing immediately
+                dropdownMenu.classList.toggle('show');
+            });
+
+            document.addEventListener('click', function () {
+                // Close any open dropdown when clicking outside
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+
+            notesContainer.appendChild(noteCard);
+        });
     }
-}
 
-/*************************************************************************
- * Delete Note Logic
- **************************************************************************/
+    // Save notes to local storage
+    function saveNotesToLocalStorage() {
+        localStorage.setItem('notes', JSON.stringify(notes));
+    }
 
-function deleteNote(noteId) {
-    let notes = JSON.parse(localStorage.getItem('notes')) || [];
-    notes = notes.filter(note => note.id !== noteId);
+    // Load notes from local storage
+    function loadNotesFromLocalStorage() {
+        const storedNotes = localStorage.getItem('notes');
+        if (storedNotes) {
+            notes = JSON.parse(storedNotes);
+            renderNotes();
+        }
+    }
 
-    localStorage.setItem('notes', JSON.stringify(notes));
-    displayNotes();
-}
+    // Add new note button click event
+    addNoteBtn.addEventListener('click', function () {
+        openModal(modal);
+    });
 
-displayNotes();
+    // Load notes on page load
+    loadNotesFromLocalStorage();
+});
