@@ -19,7 +19,8 @@ The theme for the app is inspired by a light green background, with interactive 
 ![Screenshot 2024-10-10 at 2 48 32 PM](https://github.com/user-attachments/assets/d5615956-2d6c-4d57-ae20-361838a275f4)
 ![Screenshot 2024-10-10 at 2 49 00 PM](https://github.com/user-attachments/assets/6cd83f5c-a5e8-4e10-b551-f326d92ca071)
 ![Screenshot 2024-10-10 at 2 51 05 PM](https://github.com/user-attachments/assets/0e2f6887-3ea7-494e-9632-ae693de4335a)
-![Screenshot 2024-10-10 at 2 51 21 PM](https://github.com/user-attachments/assets/667de19c-3730-4a02-9a31-220112888e29)
+![Screenshot 2024-10-10 at 7 18 00 PM](https://github.com/user-attachments/assets/0659179a-fd7a-455b-9621-9f094659970e)
+
 
 
 
