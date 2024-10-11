@@ -90,9 +90,9 @@ body.dark-mode {
 
 /* Flash Card Dark Mode Styles */
 body.dark-mode .note-card {
-    background-color: #3a3b3c; /* A dark grey color for the flash card */
-    color: #ffffff; /* White text for better contrast */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* A slightly lighter shadow for dark mode */
+    background-color: #3a3b3c; 
+    color: #ffffff; 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* text or elements within the flash card */
@@ -107,6 +107,8 @@ body.dark-mode .note-card .note-content {
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 20px;
     margin-top: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
 }
 
 /* Note Card */
@@ -149,11 +151,28 @@ body.dark-mode .note-card .note-content {
     display: flex;
     justify-content: flex-end;
 }
+/* Dark Mode - Three Dots Styling */
+body.dark-mode .dropdown-toggle {
+    color: #ffffff;
+}
+body.dark-mode .dropdown-toggle:hover {
+    color: #f04141;
+    opacity: 0.8;
+}
 
 /* Dropdown Menu */
 .dropdown {
     position: relative;
     display: inline-block;
+}
+/* Dark mode for dropdown menu inside flash cards */
+body.dark-mode .dropdown-menu {
+    background-color: #3a3b3c; /* Dark background for dropdown */
+    color: #ffffff;
+}
+
+body.dark-mode .dropdown-menu button:hover {
+    background-color: #505153; /* Slightly lighter grey for hover effect */
 }
 
 .dropdown-toggle {
