@@ -53,36 +53,76 @@ body.dark-mode {
     letter-spacing: 1px;
 }
 
-/* Dark Mode Toggle Button */
-.header1 {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 10px 20px;
+/* Dark Mode Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 65px;
+    height: 34px;
 }
 
-.dark-mode-btn {
-    background-color: #ffdd57;
-    width: 50px;
-    height: 50px;
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #1a73e8;
+    transition: background-color 0.4s ease-in-out, transform 0.4s;
+    border-radius: 34px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.slider:before {
+    position: absolute;
+    content: "\f185";
+    font-family: FontAwesome;
+    font-size: 16px;
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: transform 0.4s, color 0.4s, background-color 0.4s, box-shadow 0.4s;
     border-radius: 50%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    position: fixed;
-    right: 20px;
-    top: 20px;
-    z-index: 1000;
+    align-items: center;
+    color: #1a73e8;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.dark-mode-btn:hover {
-    transform: scale(1.1);
-    background-color: #f7c948;
+
+input:checked + .slider {
+    background: linear-gradient(90deg, #1a73e8, #4a148c);
 }
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+    content: "\f186"; 
+    color: #1a73e8;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(26, 115, 232, 0.6);
+}
+
+/* Hand cursor */
+.slider {
+    cursor: pointer;
+}
+
+/* Tooltip for accessibility */
+input[type="checkbox"] {
+    cursor: pointer;
+    position: relative;
+}
+
 
 body.dark-mode {
     background-color: #202124; /* Set the desired background color */
@@ -319,19 +359,150 @@ textarea {
     height: 100px;
 }
 
-/* Save and update buttons */
+
+
+/* Modal Content: Larger size for better UX */
+.modal-content {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    max-width: 600px; 
+    width: 90%;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    font-size: 1rem; 
+    position: relative; 
+}
+
+/* Dark Mode Modal Styles */
+body.dark-mode .modal-content {
+    background-color: #3a3b3c; 
+    color: #e8eaed; 
+}
+
+/* Input and Textarea Styling: Larger size for comfort */
+input, textarea {
+    width: 100%;
+    padding: 15px 18px;
+    margin-top: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fefefe;
+}
+
+/* Dark Mode Input/Textarea Styling */
+body.dark-mode input, body.dark-mode textarea {
+    background-color: #555555;
+    color: #e8eaed;
+    border: 1px solid #777777; 
+}
+
+textarea {
+    resize: none;
+    height: 180px; 
+}
+
+/* Focus Effect: Highlight border and add box shadow */
+input:focus, textarea:focus {
+    border-color: #1a73e8; 
+    box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
+    outline: none;
+}
+
+/* Placeholder Styling */
+input::placeholder, textarea::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* Dark Mode Placeholder Styling */
+body.dark-mode input::placeholder, body.dark-mode textarea::placeholder {
+    color: #bbbbbb;
+}
+
+/* Save and Update Buttons: Styled to match UI theme */
 button#save-note-btn, button#update-note-btn {
-    background-color: #1abc9c;
+    background-color: #1a73e8;
     color: white;
     border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 6px;
+    padding: 15px 25px;
+    font-size: 1.1rem; 
+    border-radius: 8px;
     cursor: pointer;
-    margin-top: 15px;
+    margin-top: 20px;
+    box-shadow: 0 5px 10px rgba(26, 115, 232, 0.2); 
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 button#save-note-btn:hover, button#update-note-btn:hover {
-    background-color: #16a085;
+    background-color: #155bb5; 
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(21, 91, 181, 0.3);
+}
+
+/* Dark Mode Button Styling */
+body.dark-mode button#save-note-btn, body.dark-mode button#update-note-btn {
+    background-color: #4a90e2;
+}
+
+button#save-note-btn:hover, button#update-note-btn:hover {
+    background-color: #1257a2;
+}
+
+/* Close Button Styling */
+.close-btn {
+    color: #e53935; 
+    background-color: transparent;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Close Button Dark Mode Styling */
+body.dark-mode .close-btn {
+    color: #ff6b6b; 
+}
+
+.close-btn:hover {
+    color: #b71c1c; 
+    transform: scale(1.1);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Tooltip for Close Button */
+.close-btn::after {
+    content: attr(title);
+    position: absolute;
+    top: -30px;
+    right: 0;
+    background: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.close-btn:hover::after {
+    opacity: 1;
+    transform: translateY(0);
 }
 

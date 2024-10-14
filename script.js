@@ -36,9 +36,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Dark Mode Toggle
-    // darkModeToggle.addEventListener('click', function () {
-    //     document.body.classList.toggle('dark-mode');
-    // });
     document.getElementById('dark-mode-toggle').addEventListener('click', function () {
         document.body.classList.toggle('dark-mode');
     });
@@ -154,4 +151,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Load notes on page load
     loadNotesFromLocalStorage();
+    
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            closeModal(modal);
+            closeModal(editModal);
+        }
+    });
+    
 });
