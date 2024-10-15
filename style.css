@@ -534,4 +534,23 @@ body.dark-mode .close-btn {
     color: #999;
     font-style: italic;
 }
+/* Dark Mode Search Input Styling */
+body.dark-mode .search-input {
+    background-color: #333;
+    color: #e8eaed;
+    border: 1px solid #555;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Dark Mode Focus State */
+body.dark-mode .search-input:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 8px 25px rgba(26, 115, 232, 0.4);
+    background-color: #444;
+}
+
+/* Dark Mode Placeholder Text Styling */
+body.dark-mode .search-input::placeholder {
+    color: #aaa;
+}
 
