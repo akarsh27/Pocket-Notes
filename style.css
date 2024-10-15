@@ -293,9 +293,9 @@ body.dark-mode .dropdown-menu button:hover {
 /* Floating Add Button */
 .floating-btn {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #007bff;
+    bottom: 20px; /* Fix to bottom */
+    right: 20px;  /* Fix to right */
+    background-color: #007bff; /* Base button color */
     color: white;
     border: none;
     width: 60px;
@@ -306,12 +306,14 @@ body.dark-mode .dropdown-menu button:hover {
     line-height: 60px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.4s ease, transform 0.3s ease;
+    overflow: hidden; /* Ensure the glow stays inside */
 }
-
 .floating-btn:hover {
     background-color: #0056b3;
+    box-shadow: 0 10px 30px rgba(0, 123, 255, 0.5), 0 0 20px rgba(0, 123, 255, 0.3);
+    transform: scale(1.05); 
 }
-
 /* Modal */
 .modal {
     display: none;
