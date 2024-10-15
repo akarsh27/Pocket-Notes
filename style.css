@@ -506,3 +506,32 @@ body.dark-mode .close-btn {
     transform: translateY(0);
 }
 
+/* Search Input Styling */
+.search-input {
+    width: 90%;
+    margin: 20px auto;
+    display: block;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background-color: #f8f9fa;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+}
+
+/* Focus State */
+.search-input:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 8px 25px rgba(26, 115, 232, 0.2);
+    background-color: #fff;
+    outline: none;
+}
+
+/* Placeholder Text Styling */
+.search-input::placeholder {
+    color: #999;
+    font-style: italic;
+}
+

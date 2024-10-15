@@ -12,10 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const noteContentInput = document.getElementById('note-content-input');
     const editTitleInput = document.getElementById('edit-note-title');
     const editContentInput = document.getElementById('edit-note-content');
-  
+    const searchBar = document.getElementById('search-bar'); // Search bar element
+
     // State
     let notes = [];
     let editingNoteId = null;
+
+    // Load notes from local storage on page load
+    loadNotesFromLocalStorage();
 
     // Modal Handling
     function openModal(modal) {
@@ -54,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             notes.push(note);
             saveNotesToLocalStorage();
-            renderNotes();
+            renderNotes(notes);  // Always render the full notes array
             closeModal(modal);
         }
     });
@@ -64,70 +68,91 @@ document.addEventListener('DOMContentLoaded', function () {
         const updatedTitle = editTitleInput.value.trim();
         const updatedContent = editContentInput.value.trim();
 
-        notes = notes.map(note => {
-            if (note.id === editingNoteId) {
-                return { ...note, title: updatedTitle, content: updatedContent };
-            }
-            return note;
-        });
+        if (updatedTitle && updatedContent) {
+            notes = notes.map(note => {
+                if (note.id === editingNoteId) {
+                    return { ...note, title: updatedTitle, content: updatedContent };
+                }
+                return note;
+            });
 
-        saveNotesToLocalStorage();
-        renderNotes();
-        closeModal(editModal);
+            saveNotesToLocalStorage();
+            renderNotes(notes);
+            closeModal(editModal);
+        }
     });
 
     // Render notes
-    function renderNotes() {
-        notesContainer.innerHTML = '';
-        notes.forEach(note => {
-            const noteCard = document.createElement('div');
-            noteCard.classList.add('note-card');
-            noteCard.innerHTML = `
-                <h3 class="note-title">${note.title}</h3>
-                <p class="note-content">${note.content}</p>
-                <div class="note-actions">
-                    <div class="dropdown">
-                        <button class="dropdown-toggle">⋮</button>
-                        <div class="dropdown-menu">
-                            <button class="edit-btn">Edit</button>
-                            <button class="delete-btn">Delete</button>
+    function renderNotes(filteredNotes = notes) {
+        notesContainer.innerHTML = ''; // Clear current notes
+        if (filteredNotes.length === 0) {
+            notesContainer.innerHTML = `<p>No notes found.</p>`;
+        } else {
+            filteredNotes.forEach(note => {
+                const noteCard = document.createElement('div');
+                noteCard.classList.add('note-card');
+                noteCard.innerHTML = `
+                    <h3 class="note-title">${note.title}</h3>
+                    <p class="note-content">${note.content}</p>
+                    <div class="note-actions">
+                        <div class="dropdown">
+                            <button class="dropdown-toggle">⋮</button>
+                            <div class="dropdown-menu">
+                                <button class="edit-btn">Edit</button>
+                                <button class="delete-btn">Delete</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
+                `;
 
-            // Edit and Delete Note Functionality
-            noteCard.querySelector('.edit-btn').addEventListener('click', function () {
-                editingNoteId = note.id;
-                editTitleInput.value = note.title;
-                editContentInput.value = note.content;
-                openModal(editModal);
+                // Edit Note
+                noteCard.querySelector('.edit-btn').addEventListener('click', function () {
+                    editingNoteId = note.id;
+                    editTitleInput.value = note.title;
+                    editContentInput.value = note.content;
+                    openModal(editModal);
+                });
+
+                // Delete Note
+                noteCard.querySelector('.delete-btn').addEventListener('click', function () {
+                    notes = notes.filter(n => n.id !== note.id);
+                    saveNotesToLocalStorage();
+                    renderNotes(notes);
+                });
+
+                // Dropdown Toggle Functionality
+                const dropdownToggle = noteCard.querySelector('.dropdown-toggle');
+                const dropdownMenu = noteCard.querySelector('.dropdown-menu');
+
+                dropdownToggle.addEventListener('click', function (event) {
+                    event.stopPropagation(); // Prevent click from closing immediately
+                    dropdownMenu.classList.toggle('show');
+                });
+
+                document.addEventListener('click', function () {
+                    // Close any open dropdown when clicking outside
+                    if (dropdownMenu.classList.contains('show')) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                });
+
+                notesContainer.appendChild(noteCard);
             });
+        }
+    }
 
-            noteCard.querySelector('.delete-btn').addEventListener('click', function () {
-                notes = notes.filter(n => n.id !== note.id);
-                saveNotesToLocalStorage();
-                renderNotes();
-            });
+    // Search functionality - filter notes based on search term
+    searchBar.addEventListener('input', function (event) {
+        const searchTerm = event.target.value.toLowerCase();
+        filterNotes(searchTerm);
+    });
 
-            // Dropdown Toggle Functionality
-            const dropdownToggle = noteCard.querySelector('.dropdown-toggle');
-            const dropdownMenu = noteCard.querySelector('.dropdown-menu');
-
-            dropdownToggle.addEventListener('click', function (event) {
-                event.stopPropagation(); // Prevent click from closing immediately
-                dropdownMenu.classList.toggle('show');
-            });
-
-            document.addEventListener('click', function () {
-                // Close any open dropdown when clicking outside
-                if (dropdownMenu.classList.contains('show')) {
-                    dropdownMenu.classList.remove('show');
-                }
-            });
-
-            notesContainer.appendChild(noteCard);
-        });
+    function filterNotes(searchTerm) {
+        const filteredNotes = notes.filter(note =>
+            note.title.toLowerCase().includes(searchTerm) ||
+            note.content.toLowerCase().includes(searchTerm)
+        );
+        renderNotes(filteredNotes); // Render filtered notes
     }
 
     // Save notes to local storage
@@ -140,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const storedNotes = localStorage.getItem('notes');
         if (storedNotes) {
             notes = JSON.parse(storedNotes);
-            renderNotes();
+            renderNotes(notes);  // Render notes after loading from local storage
         }
     }
 
@@ -149,14 +174,11 @@ document.addEventListener('DOMContentLoaded', function () {
         openModal(modal);
     });
 
-    // Load notes on page load
-    loadNotesFromLocalStorage();
-    
+    // Close modals with Escape key
     document.addEventListener('keydown', function(event) {
         if (event.key === "Escape") {
             closeModal(modal);
             closeModal(editModal);
         }
     });
-    
 });
